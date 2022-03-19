@@ -60,9 +60,6 @@
     "react-dom": "^17.0.0",
     "taro-ui": "^3.0.0-alpha.3"
   },
-  "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown"
-  },
   "devDependencies": {
     "@babel/core": "^7.8.0",
     "@tarojs/mini-runner": "3.4.3",
@@ -79,7 +76,6 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "husky": "^7.0.4",
     "lint-staged": "^12.3.7",
-    "prettier": "2.6.0",
     "stylelint": "9.3.0"
   }
 }

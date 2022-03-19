@@ -2,7 +2,7 @@
  * @Author: Luo Wei
  * @Date: 2022-03-19 09:54:22
  * @LastEditors: Luo Wei
- * @LastEditTime: 2022-03-19 10:54:16
+ * @LastEditTime: 2022-03-19 11:15:09
  */
 
 import { View } from "@tarojs/components";
@@ -25,11 +25,11 @@ const List = () => {
   ];
 
   return (
-    <View className="at-row main-container">
-      <View className="at-col calendar">
+    <View className='at-row main-container'>
+      <View className='at-col calendar'>
         <AtCalendar />
       </View>
-      <View className="at-col todo-list">
+      <View className='at-col todo-list'>
         {todoList.map((item) => (
           <TodoItem item={item} key={item.id} />
         ))}

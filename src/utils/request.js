@@ -3,7 +3,7 @@ import Taro from "@tarojs/taro";
  * @Author: Luo Wei
  * @Date: 2022-03-20 19:27:23
  * @LastEditors: Luo Wei
- * @LastEditTime: 2022-03-21 10:08:13
+ * @LastEditTime: 2022-03-21 20:50:40
  */
 
 const interceptor = function(chain) {
@@ -24,8 +24,9 @@ const request = ({ method, url, data }) =>
     method,
     url: `${baseURL}${url}`,
     timeout: 2000,
-    headers: {
-      name: "123"
+    header: {
+      "Content-Type": "application/json",
+      name: "LuoWei"
     },
     data
   });

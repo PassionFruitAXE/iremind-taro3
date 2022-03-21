@@ -2,90 +2,134 @@
  * @Author: Luo Wei
  * @Date: 2022-03-19 09:54:22
  * @LastEditors: Luo Wei
- * @LastEditTime: 2022-03-21 17:20:13
+ * @LastEditTime: 2022-03-21 20:50:19
  */
 
+import Taro from '@tarojs/taro';
 import { View, Picker, Text } from '@tarojs/components';
 import { useEffect, useState } from 'react';
-import { AtCalendar, AtButton, AtActionSheet, AtActionSheetItem, AtInput, AtList, AtListItem } from 'taro-ui';
+import {
+  AtCalendar,
+  AtButton,
+  AtActionSheet,
+  AtActionSheetItem,
+  AtInput,
+  AtList,
+  AtListItem,
+  AtMessage
+} from 'taro-ui';
 
 import 'taro-ui/dist/style/components/calendar.scss'; // 按需引入
 import 'taro-ui/dist/style/components/card.scss';
-import "taro-ui/dist/style/components/button.scss";
-import "taro-ui/dist/style/components/loading.scss";
-import "taro-ui/dist/style/components/action-sheet.scss";
-import "taro-ui/dist/style/components/input.scss";
-import "taro-ui/dist/style/components/icon.scss";
-import "taro-ui/dist/style/components/list.scss"
+import 'taro-ui/dist/style/components/button.scss';
+import 'taro-ui/dist/style/components/loading.scss';
+import 'taro-ui/dist/style/components/action-sheet.scss';
+import 'taro-ui/dist/style/components/input.scss';
+import 'taro-ui/dist/style/components/icon.scss';
+import 'taro-ui/dist/style/components/list.scss';
+import "taro-ui/dist/style/components/message.scss";
 
 import { todoList } from '../../api/index';
 
 import './index.less';
 
 const List = () => {
-  const [myList, setMyList] = useState(()=>[]);
-  const [isOpen, setIsOpen] = useState(()=>false);
-  const [type, setType] = useState(()=>null);
-  const [title, setTitle] = useState(()=>'');
-  const [date, setDate] = useState(()=>(''));
-  const [time, setTime] = useState(()=>'');
-  const [currentTodoId, setCurrentTodoId] = useState(()=>null);
+  const baseCurrentNode = {
+    id: null,
+    title: '',
+    date: '',
+    time: ''
+  };
+
+  const [myList, setMyList] = useState(() => []);
+  const [isOpen, setIsOpen] = useState(() => false);
+  const [type, setType] = useState(() => null);
+  const [currentNode, setCurrentNode] = useState(() => baseCurrentNode);
 
   const getMyList = async () => {
-    try{
-      const {data:{data:{list}}} = await todoList.getTodoList();
+    console.log(Taro.atMessage);
+    try {
+      const {
+        data: {
+          data: { list }
+        }
+      } = await todoList.getTodoList();
       setMyList(list);
-    }catch(err){
+    } catch (err) {
       console.error(err);
     }
-  }
+  };
 
-  const addMyList = () => {
+  const addMyList = async () => {
     try {
-      todoList.addTodoList({ title, date, time });
-    }catch(err){
+      const { title, date, time } = currentNode;
+      await todoList.addTodoList({ title, date, time });
+      setIsOpen(() => false);
+      getMyList();
+
+      Taro.atMessage({ message: '添加成功', type: 'success' });
+
+    } catch (err) {
       console.error(err);
     }
-  }
+  };
 
-  const alterMyList = () =>{
+  const alterMyList = async () => {
     try {
-      todoList.alterTodoList({ title, date, time, currentTodoId });
-    }catch(err){
+      await todoList.alterTodoList(currentNode);
+      setIsOpen(() => false);
+      getMyList();
+
+      Taro.atMessage({ message: '修改成功', type: 'success' });
+
+    } catch (err) {
       console.error(err);
     }
-  }
+  };
 
-  useEffect(()=>{
+  const deleteMyList = async () => {
+    try {
+      const { id } = currentNode;
+      await todoList.deleteTodoList({ id });
+      setIsOpen(() => false);
+      getMyList();
+
+      Taro.atMessage({ message: '删除成功', type: 'success' });
+
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
     getMyList();
-  },[])
+  }, []);
 
   return (
     <View className='at-row main-container'>
+      <AtMessage />
       <View className='at-col calendar'>
         <AtCalendar />
       </View>
       <View className='at-col todo-list'>
-      <AtButton
-        className='add-button'
-        onClick={()=>{
-          setType(()=>"新建代办")
-          setIsOpen(()=>true);
-        }}
-        type='secondary'
-        circle
-      >
+        <AtButton
+          className='add-button'
+          onClick={() => {
+            setType(() => '新建代办');
+            setIsOpen(() => true);
+            setCurrentNode(baseCurrentNode);
+          }}
+          type='secondary'
+          circle
+        >
           +
-      </AtButton>
+        </AtButton>
         {myList.map(item => (
           <View
-            onClick={()=>{
-              setType(()=>"修改代办");
-              setTitle(()=>item.title)
-              setDate(()=>item.date);
-              setTime(()=>item.time);
-              setIsOpen(()=>true);
-              setCurrentTodoId(()=>item.id);
+            onClick={() => {
+              setType(() => '修改代办');
+              setIsOpen(() => true);
+              setCurrentNode(item);
             }}
             className='todo-item'
             key={item.id}
@@ -97,8 +141,8 @@ const List = () => {
       </View>
       <AtActionSheet
         isOpened={isOpen}
-        onClose={()=>{
-          setIsOpen(()=>false);
+        onClose={() => {
+          setIsOpen(() => false);
         }}
         title={`${type}`}
       >
@@ -107,26 +151,56 @@ const List = () => {
             name='事件标题:'
             title='事件标题:'
             type='text'
-            value={type==='新建代办'?'':title}
             className='text-right'
-            onChange={e=>{setTitle(()=>e.detail.value)}}
+            value={currentNode.title}
+            onChange={title => {
+              setCurrentNode(state => ({ ...state, title }));
+            }}
           />
-          <Picker mode='date' className='picker' onChange={e=>{setDate(()=>e.detail.value)}}>
+          <Picker
+            mode='date'
+            className='picker'
+            onChange={e => {
+              setCurrentNode(state => ({ ...state, date: e.detail.value }));
+            }}
+          >
             <AtList>
-              <AtListItem title='请选择日期'  extraText={type==='新建代办'?'':date} />
+              <AtListItem
+                title='请选择日期'
+                extraText={currentNode.date}
+              />
             </AtList>
           </Picker>
-          <Picker mode='time' className='picker' onChange={e=>{setTime(()=>e.detail.value)}}>
+          <Picker
+            mode='time'
+            className='picker'
+            onChange={e => {
+              setCurrentNode(state => ({ ...state, time: e.detail.value }));
+            }}
+          >
             <AtList>
-              <AtListItem title='请选择时间' extraText={type==='新建代办'?'':time} />
+              <AtListItem
+                title='请选择时间'
+                extraText={currentNode.time}
+              />
             </AtList>
           </Picker>
         </AtActionSheetItem>
         <AtActionSheetItem>
-          {type==='新建代办'?
-            <AtButton onCLick={addMyList} type='secondary'>新建代办</AtButton>
-            :
-            <AtButton onClick={alterMyList} type='secondary'>修改代办</AtButton>}
+          {type === '新建代办' ? (
+            <AtButton onClick={addMyList} type='secondary'>
+              新建代办
+            </AtButton>
+          ) : (
+            <>
+              <AtButton onClick={alterMyList} type='secondary'>
+                修改代办
+              </AtButton>
+              <AtButton onClick={deleteMyList} type='secondary'>
+                删除代办
+              </AtButton>
+            </>
+          )}
         </AtActionSheetItem>
       </AtActionSheet>
     </View>

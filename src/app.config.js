@@ -1,5 +1,9 @@
 export default {
-  pages: ["pages/index/index", "pages/chart/index", "pages/focus/index"],
+  pages: [
+    "pages/index/index",
+    "pages/chart/index",
+    "pages/focus/index"
+  ],
   tabBar: {
     color: "#000",
     selectedColor: "#54c7ec",

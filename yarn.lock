@@ -13254,6 +13254,11 @@ taro-ui@^3.0.0-alpha.3:
     lodash "^4.17.10"
     prop-types "^15.7.2"
 
+techarts@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/techarts/-/techarts-1.0.6.tgz#8d9e64f586e4a48156b5f96a0e9945e7c0003374"
+  integrity sha512-RPU/bUsTxNDjKMRmNo92A/5zTDE1PYQZB6h7xar12lZogwa9zhaqHxAcgHFlQ+Cr1A42s5dUuXYOQGTbdR2JUQ==
+
 term-size@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/term-size/-/term-size-1.2.0.tgz#458b83887f288fc56d6fffbfad262e26638efa69"

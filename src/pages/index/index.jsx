@@ -2,7 +2,7 @@
  * @Author: Luo Wei
  * @Date: 2022-03-19 09:54:22
  * @LastEditors: Luo Wei
- * @LastEditTime: 2022-03-22 19:32:02
+ * @LastEditTime: 2022-04-01 16:32:14
  */
 
 import Taro from '@tarojs/taro';
@@ -42,7 +42,7 @@ const List = () => {
   };
 
   const [myList, setMyList] = useState(() => []);
-  const [isOpen, setIsOpen] = useState(() => false);
+  const [isOpened, setIsOpened] = useState(() => false);
   const [type, setType] = useState(() => null);
   const [currentNode, setCurrentNode] = useState(() => baseCurrentNode);
 
@@ -64,7 +64,7 @@ const List = () => {
     try {
       const { title, date, time } = currentNode;
       await todoList.addTodoList({ title, date, time });
-      setIsOpen(() => false);
+      setIsOpened(() => false);
       getMyList();
 
       Taro.atMessage({ message: '添加成功', type: 'success' });
@@ -77,7 +77,7 @@ const List = () => {
   const alterMyList = async () => {
     try {
       await todoList.alterTodoList(currentNode);
-      setIsOpen(() => false);
+      setIsOpened(() => false);
       getMyList();
 
       Taro.atMessage({ message: '修改成功', type: 'success' });
@@ -91,7 +91,7 @@ const List = () => {
     try {
       const { id } = currentNode;
       await todoList.deleteTodoList({ id });
-      setIsOpen(() => false);
+      setIsOpened(() => false);
       getMyList();
 
       Taro.atMessage({ message: '删除成功', type: 'success' });
@@ -116,7 +116,7 @@ const List = () => {
           className='add-button'
           onClick={() => {
             setType(() => '新建代办');
-            setIsOpen(() => true);
+            setIsOpened(() => true);
             setCurrentNode(baseCurrentNode);
           }}
           type='secondary'
@@ -128,7 +128,7 @@ const List = () => {
           <View
             onClick={() => {
               setType(() => '修改代办');
-              setIsOpen(() => true);
+              setIsOpened(() => true);
               setCurrentNode(item);
             }}
             className='todo-item'
@@ -140,9 +140,9 @@ const List = () => {
         ))}
       </View>
       <AtActionSheet
-        isOpened={isOpen}
+        isOpened={isOpened}
         onClose={() => {
-          setIsOpen(() => false);
+          setIsOpened(() => false);
         }}
         title={`${type}`}
       >

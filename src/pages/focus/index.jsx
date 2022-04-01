@@ -2,7 +2,7 @@
  * @Author: Luo Wei
  * @Date: 2022-03-19 09:54:22
  * @LastEditors: Luo Wei
- * @LastEditTime: 2022-04-01 16:51:07
+ * @LastEditTime: 2022-04-01 17:08:09
  */
 
 import { View, Image, Text } from '@tarojs/components';
@@ -30,6 +30,7 @@ const Focus = () => {
   countRef.current = count;
 
   const countStart = () => {
+    if(isStart) {return;}
     setCount(timeChoose * 60);
     setIsStart(true);
     const timer = setInterval(() => {

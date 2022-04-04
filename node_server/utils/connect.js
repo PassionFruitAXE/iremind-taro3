@@ -3,16 +3,16 @@
  * @Author: Luo Wei
  * @Date: 2022-04-01 21:35:04
  * @LastEditors: Luo Wei
- * @LastEditTime: 2022-04-01 21:43:29
+ * @LastEditTime: 2022-04-04 21:38:53
  */
 const mongoose = require("mongoose");
 
 mongoose.connect(
-  "mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false"
+  "mongodb://localhost/data"
 );
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "Connection Error!"));
 db.once("open", function() {
-  console.log("We are Connected to MongoDB");
+  console.log("We are Connected to MongoDB 'data' Database");
 });

@@ -3,7 +3,7 @@ import Taro from "@tarojs/taro";
  * @Author: Luo Wei
  * @Date: 2022-03-20 19:27:23
  * @LastEditors: Luo Wei
- * @LastEditTime: 2022-03-21 20:50:40
+ * @LastEditTime: 2022-04-05 16:32:24
  */
 
 const interceptor = function(chain) {
@@ -18,7 +18,7 @@ const interceptor = function(chain) {
 };
 Taro.addInterceptor(interceptor);
 
-const baseURL = "http://127.0.0.1:4523/mock/755762";
+const baseURL = "http://127.0.0.1:8081";
 const request = ({ method, url, data }) =>
   Taro.request({
     method,
@@ -26,7 +26,7 @@ const request = ({ method, url, data }) =>
     timeout: 2000,
     header: {
       "Content-Type": "application/json",
-      name: "LuoWei"
+      Authorization: "LuoWei"
     },
     data
   });

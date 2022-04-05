@@ -2,7 +2,7 @@
  * @Author: Luo Wei
  * @Date: 2022-03-19 09:54:22
  * @LastEditors: Luo Wei
- * @LastEditTime: 2022-04-05 15:40:38
+ * @LastEditTime: 2022-04-05 16:45:54
  */
 
 import Taro from '@tarojs/taro';
@@ -27,7 +27,7 @@ import 'taro-ui/dist/style/components/action-sheet.scss';
 import 'taro-ui/dist/style/components/input.scss';
 import 'taro-ui/dist/style/components/icon.scss';
 import 'taro-ui/dist/style/components/list.scss';
-import "taro-ui/dist/style/components/message.scss";
+import 'taro-ui/dist/style/components/message.scss';
 
 import { todoList } from '../../api/index';
 
@@ -47,7 +47,6 @@ const List = () => {
   const [currentNode, setCurrentNode] = useState(() => baseCurrentNode);
 
   const getMyList = async () => {
-    console.log(Taro.atMessage);
     try {
       const {
         data: {
@@ -61,20 +60,27 @@ const List = () => {
   };
 
   const addMyList = async () => {
+    const { title, date, time, _id } = currentNode;
+    if (title === '' && date === '' && time === '' && _id === null) {
+      Taro.atMessage({ message: '请正确填入信息', type: 'warning' });
+      return false;
+    }
     try {
-      const { title, date, time } = currentNode;
-      await todoList.addTodoList({ title, date, time });
+      await todoList.addTodoList(currentNode);
       setIsOpened(() => false);
       getMyList();
-
       Taro.atMessage({ message: '添加成功', type: 'success' });
-
     } catch (err) {
       console.error(err);
     }
   };
 
   const alterMyList = async () => {
+    const { title, date, time, _id } = currentNode;
+    if (title === '' && date === '' && time === '' && _id === null) {
+      Taro.atMessage({ message: '请正确填入信息', type: 'warning' });
+      return false;
+    }
     try {
       await todoList.alterTodoList(currentNode);
       setIsOpened(() => false);
@@ -131,7 +137,9 @@ const List = () => {
             key={item._id}
           >
             <Text className='todo-title'>{item.title}</Text>
-            <Text className='todo-time'>{item.time}</Text>
+            <Text className='todo-time'>
+              {item.date} {item.time}
+            </Text>
           </View>
         ))}
       </View>
@@ -161,10 +169,7 @@ const List = () => {
             }}
           >
             <AtList>
-              <AtListItem
-                title='请选择日期'
-                extraText={currentNode.date}
-              />
+              <AtListItem title='请选择日期' extraText={currentNode.date} />
             </AtList>
           </Picker>
           <Picker
@@ -175,10 +180,7 @@ const List = () => {
             }}
           >
             <AtList>
-              <AtListItem
-                title='请选择时间'
-                extraText={currentNode.time}
-              />
+              <AtListItem title='请选择时间' extraText={currentNode.time} />
             </AtList>
           </Picker>
         </AtActionSheetItem>

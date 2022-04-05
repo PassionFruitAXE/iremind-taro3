@@ -2,7 +2,7 @@
  * @Author: Luo Wei
  * @Date: 2022-03-19 09:54:22
  * @LastEditors: Luo Wei
- * @LastEditTime: 2022-04-01 16:32:14
+ * @LastEditTime: 2022-04-05 15:40:38
  */
 
 import Taro from '@tarojs/taro';
@@ -35,7 +35,7 @@ import './index.less';
 
 const List = () => {
   const baseCurrentNode = {
-    id: null,
+    _id: null,
     title: '',
     date: '',
     time: ''
@@ -79,9 +79,7 @@ const List = () => {
       await todoList.alterTodoList(currentNode);
       setIsOpened(() => false);
       getMyList();
-
       Taro.atMessage({ message: '修改成功', type: 'success' });
-
     } catch (err) {
       console.error(err);
     }
@@ -89,13 +87,11 @@ const List = () => {
 
   const deleteMyList = async () => {
     try {
-      const { id } = currentNode;
-      await todoList.deleteTodoList({ id });
+      const { _id } = currentNode;
+      await todoList.deleteTodoList({ _id });
       setIsOpened(() => false);
       getMyList();
-
       Taro.atMessage({ message: '删除成功', type: 'success' });
-
     } catch (err) {
       console.error(err);
     }
@@ -132,7 +128,7 @@ const List = () => {
               setCurrentNode(item);
             }}
             className='todo-item'
-            key={item.id}
+            key={item._id}
           >
             <Text className='todo-title'>{item.title}</Text>
             <Text className='todo-time'>{item.time}</Text>

@@ -1,3 +1,9 @@
+/**
+ *
+ * @param {Object} res http: res
+ * @param {Function} successCallback
+ * @returns
+ */
 const dataBaseCallback = (res, successCallback) => {
   return (err, docs) => {
     if (err) {

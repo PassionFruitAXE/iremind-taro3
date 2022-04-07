@@ -3,13 +3,16 @@
  * @Author: Luo Wei
  * @Date: 2022-04-01 21:35:04
  * @LastEditors: Luo Wei
- * @LastEditTime: 2022-04-04 21:38:53
+ * @LastEditTime: 2022-04-07 21:16:26
  */
 const mongoose = require("mongoose");
 
-mongoose.connect(
-  "mongodb://localhost/data"
-);
+// const url =
+//   "mongodb+srv://shallowwind:lw13708137873@luowei.way4e.mongodb.net/data?retryWrites=true&w=majority";
+
+const url = "mongodb://localhost:27017/users";
+
+mongoose.connect(url);
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "Connection Error!"));

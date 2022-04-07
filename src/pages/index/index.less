@@ -1,4 +1,5 @@
 @import "../../common-style/border.less";
+@import "../../common-style/animate.less";
 
 .main-container {
   padding: 30px;
@@ -8,6 +9,7 @@
   #border-shadow.white();
   border-radius: 50px;
   padding: 30px;
+  #animate.animate__fadeInUp();
 }
 
 .todo-list {
@@ -49,6 +51,7 @@
   #border-shadow.white();
   border-radius: 20px;
   line-height: 100px;
+  #animate.animate__fadeInUp();
 }
 
 .todo-title {
@@ -59,4 +62,24 @@
 .todo-time {
   display: block;
   font-size: 26px;
+}
+
+.edit-button {
+  width: 80vw;
+  margin: 20px auto;
+  font-size: 32px;
+  #border-shadow.white();
+  border: 1px solid #2196f3;
+  border-radius: 30px;
+  #animate.animate__fadeInUp();
+}
+
+.edit-button:first-child {
+  border: 1px solid green;
+  color: green
+}
+
+.edit-button:last-child {
+  border: 1px solid red;
+  color: red
 }

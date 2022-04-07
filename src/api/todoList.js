@@ -3,7 +3,7 @@ import request from "../utils/request";
  * @Author: Luo Wei
  * @Date: 2022-03-20 17:22:25
  * @LastEditors: Luo Wei
- * @LastEditTime: 2022-03-26 16:52:31
+ * @LastEditTime: 2022-04-07 22:52:17
  */
 
 const routerURL = "/todoList";
@@ -36,5 +36,12 @@ export function getTodoList() {
   return request({
     method: "GET",
     url: `${routerURL}/getTodoList`
+  });
+}
+
+export function finishTodoList(data) {
+  return request({
+    method: "GET",
+    url: `${routerURL}/finishTodoList/${data._id}`
   });
 }

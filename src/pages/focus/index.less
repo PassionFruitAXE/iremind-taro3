@@ -1,4 +1,5 @@
 @import "../../common-style/border.less";
+@import "../../common-style/animate.less";
 
 .focus-image {
   width: 100vw;
@@ -22,6 +23,7 @@
   text-align: center;
   font-size: 30px;
   transition: color 1s;
+  #animate.animate__fadeInUp();
 }
 
 .check {
@@ -30,6 +32,11 @@
 }
 
 .start-button {
-  margin-top: 10%;
+  width: 80vw;
+  margin: 10% auto;
   font-size: 40px;
+  #border-shadow.white();
+  border: 1px dashed #e0e0e6;
+  border-radius: 30px;
+  #animate.animate__fadeInUp();
 }

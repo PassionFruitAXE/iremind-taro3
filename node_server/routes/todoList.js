@@ -45,7 +45,7 @@ router.post("/addTodoList", function(req, res) {
           })
         );
       } else {
-        docs.update(
+        docs.updateOne(
           {
             $set: { list: [...docs.list, { title, date, time }] }
           },
@@ -65,7 +65,7 @@ router.put("/alterTodoList", function(req, res) {
     { Authorization },
     "list",
     dataBaseCallback(res, docs => {
-      docs.update(
+      docs.updateOne(
         {
           $set: {
             list: docs.list.map(item =>
@@ -90,7 +90,7 @@ router.delete("/deleteTodoList", function(req, res) {
     { Authorization },
     "list",
     dataBaseCallback(res, docs => {
-      docs.update(
+      docs.updateOne(
         {
           $set: {
             list: docs.list.filter(item => item._id.toString() !== _id)

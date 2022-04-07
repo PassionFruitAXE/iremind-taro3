@@ -2,7 +2,7 @@
  * @Author: Luo Wei
  * @Date: 2022-03-19 09:54:22
  * @LastEditors: Luo Wei
- * @LastEditTime: 2022-04-05 16:45:54
+ * @LastEditTime: 2022-04-07 22:58:33
  */
 
 import Taro from '@tarojs/taro';
@@ -103,6 +103,18 @@ const List = () => {
     }
   };
 
+  const finishMyList = async () => {
+    try {
+      const { _id } = currentNode;
+      await todoList.finishTodoList({ _id });
+      setIsOpened(() => false);
+      getMyList();
+      Taro.atMessage({ message: '已完成代办', type: 'success' });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     getMyList();
   }, []);
@@ -133,7 +145,7 @@ const List = () => {
               setIsOpened(() => true);
               setCurrentNode(item);
             }}
-            className='todo-item'
+            className='todo-item .animate__animated animate__fadeInUp'
             key={item._id}
           >
             <Text className='todo-title'>{item.title}</Text>
@@ -191,10 +203,25 @@ const List = () => {
             </AtButton>
           ) : (
             <>
-              <AtButton onClick={alterMyList} type='secondary'>
+              <AtButton
+                onClick={finishMyList}
+                type='secondary'
+                className='edit-button'
+              >
+                完成
+              </AtButton>
+              <AtButton
+                onClick={alterMyList}
+                type='secondary'
+                className='edit-button'
+              >
                 修改代办
               </AtButton>
-              <AtButton onClick={deleteMyList} type='secondary'>
+              <AtButton
+                onClick={deleteMyList}
+                type='secondary'
+                className='edit-button'
+              >
                 删除代办
               </AtButton>
             </>

@@ -3,7 +3,7 @@ import Taro from "@tarojs/taro";
  * @Author: Luo Wei
  * @Date: 2022-03-20 19:27:23
  * @LastEditors: Luo Wei
- * @LastEditTime: 2022-04-05 16:32:24
+ * @LastEditTime: 2022-04-06 22:42:47
  */
 
 const interceptor = function(chain) {

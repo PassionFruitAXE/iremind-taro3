@@ -17,11 +17,23 @@ class listItem {
 
 router.get("/getTodoList", function(req, res) {
   const Authorization = req.get("Authorization");
+  if (!Authorization) {
+    res.json(baseResponse(401, "没有权限"));
+  }
   userModel.findOne(
     { Authorization },
     "list",
     dataBaseCallback(res, docs => {
-      res.json(baseResponse(undefined, undefined, docs));
+      if (!docs) {
+        userModel.create(
+          { Authorization, list: [], focusTimes: 0, listLength: 0 },
+          dataBaseCallback(res, () => {
+            res.json(baseResponse());
+          })
+        );
+      } else {
+        res.json(baseResponse(undefined, undefined, docs));
+      }
     })
   );
 });
@@ -32,35 +44,28 @@ router.post("/addTodoList", function(req, res) {
   if (!Authorization) {
     res.json(baseResponse(401, "没有权限"));
   }
-  userModel.findOne({ Authorization }, "list", (err, docs) => {
-    if (err) {
-      console.error(err);
-      res.send(err);
-    } else {
-      if (docs === null) {
-        userModel.create(
-          { Authorization, list: { title, date, time } },
-          dataBaseCallback(res, () => {
-            res.json(baseResponse());
-          })
-        );
-      } else {
-        docs.updateOne(
-          {
-            $set: { list: [...docs.list, { title, date, time }] }
-          },
-          dataBaseCallback(res, () => {
-            res.json(baseResponse());
-          })
-        );
-      }
-    }
-  });
+  userModel.findOne(
+    { Authorization },
+    "list",
+    dataBaseCallback(res, docs => {
+      docs.updateOne(
+        {
+          $set: { list: [...docs.list, { title, date, time }] }
+        },
+        dataBaseCallback(res, () => {
+          res.json(baseResponse());
+        })
+      );
+    })
+  );
 });
 
 router.put("/alterTodoList", function(req, res) {
   const Authorization = req.get("Authorization");
   const { _id, title, date, time } = req.body;
+  if (!Authorization) {
+    res.json(baseResponse(401, "没有权限"));
+  }
   userModel.findOne(
     { Authorization },
     "list",
@@ -86,6 +91,9 @@ router.put("/alterTodoList", function(req, res) {
 router.delete("/deleteTodoList", function(req, res) {
   const Authorization = req.get("Authorization");
   const { _id } = req.body;
+  if (!Authorization) {
+    res.json(baseResponse(401, "没有权限"));
+  }
   userModel.findOne(
     { Authorization },
     "list",
@@ -94,6 +102,32 @@ router.delete("/deleteTodoList", function(req, res) {
         {
           $set: {
             list: docs.list.filter(item => item._id.toString() !== _id)
+          }
+        },
+        dataBaseCallback(res, () => {
+          res.json(baseResponse());
+        })
+      );
+    })
+  );
+});
+
+router.get("/finishTodoList/:_id", function(req, res) {
+  const Authorization = req.get("Authorization");
+  const { _id } = req.params;
+  if (!Authorization) {
+    res.json(baseResponse(401, "没有权限"));
+  }
+  userModel.findOne(
+    { Authorization },
+    "list listLength",
+    dataBaseCallback(res, docs => {
+      console.log("@", docs);
+      docs.updateOne(
+        {
+          $set: {
+            list: docs.list.filter(item => item._id.toString() !== _id),
+            listLength: docs.listLength + 1
           }
         },
         dataBaseCallback(res, () => {

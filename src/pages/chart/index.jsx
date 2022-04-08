@@ -41,8 +41,7 @@ const Chart = () => {
       },
       angleAxis: {
         max:
-          (Math.max(chartData.focusTimes, chartData.listLength) / 100 + 1) *
-          100-10,
+          (Math.max(chartData.focusTimes, chartData.listLength) / 100 + 1) * 100,
         startAngle: 90
       },
       radiusAxis: {

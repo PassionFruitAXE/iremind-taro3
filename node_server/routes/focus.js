@@ -1,10 +1,10 @@
+/* eslint-disable import/no-commonjs */
 /*
  * @Author: Luo Wei
- * @Date: 2022-04-04 20:12:31
+ * @Date: 2022-04-08 15:25:34
  * @LastEditors: Luo Wei
- * @LastEditTime: 2022-04-08 16:25:29
+ * @LastEditTime: 2022-04-08 16:30:58
  */
-/* eslint-disable import/no-commonjs */
 const express = require("express");
 const userModel = require("../schemas/user");
 const baseResponse = require("../utils/response");
@@ -12,28 +12,24 @@ const dataBaseCallback = require("../utils/dataBaseCallback");
 
 const router = express.Router();
 
-const message = [
-  "天气晴朗，万物可爱",
-  "请永远相信，美好的事情即将发生",
-  "等风来，不如追风去"
-];
-
-router.get("/getChartData", function(req, res) {
+router.get("/timesIncrement", function(req, res) {
   const Authorization = req.get("Authorization");
+  console.log(Authorization);
   if (!Authorization) {
     res.json(baseResponse(401, "没有权限"));
   }
   userModel.findOne(
     { Authorization },
-    "listLength focusTimes",
+    "focusTimes",
     dataBaseCallback(res, docs => {
-      res.json(
-        baseResponse(undefined, undefined, {
-          myChartData: {
-            listLength: docs.listLength,
-            focusTimes: docs.focusTimes,
-            msg: message[~~(Math.random() * 3)]
+      docs.updateOne(
+        {
+          $set: {
+            focusTimes: docs.focusTimes + 1
           }
+        },
+        dataBaseCallback(res, () => {
+          res.json(baseResponse());
         })
       );
     })

@@ -2,7 +2,7 @@
  * @Author: Luo Wei
  * @Date: 2022-04-04 20:12:31
  * @LastEditors: Luo Wei
- * @LastEditTime: 2022-04-08 16:25:29
+ * @LastEditTime: 2022-04-08 18:30:58
  */
 /* eslint-disable import/no-commonjs */
 const express = require("express");
@@ -14,7 +14,7 @@ const router = express.Router();
 
 const message = [
   "天气晴朗，万物可爱",
-  "请永远相信，美好的事情即将发生",
+  "美好的事情即将发生",
   "等风来，不如追风去"
 ];
 

@@ -40,3 +40,48 @@
   border-radius: 30px;
   #animate.animate__fadeInUp();
 }
+
+.main-container {
+  position: relative;
+}
+
+.dashboard {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(76, 175, 80, 0.74);
+  z-index: 999;
+  left: -100vw;
+  transition: left 0.5s ease-in-out;
+  opacity: 0.3;
+}
+
+.dashboard-visible {
+  left: 0;
+}
+
+.count-board {
+  display: inline-block;
+  position: absolute;
+  #border-shadow.white();
+  background-color: #2bae85;
+  box-shadow: none;
+  border: 1px dashed #e0e0e6;
+  border-radius: 100%;
+  width: 300px;
+  height: 300px;
+  top: 50%;
+  left: -50%;
+  transform: translate(-50%, -60%);
+  transition: left 0.5s ease-in-out;
+  opacity: 1;
+  z-index: 9999;
+  text-align: center;
+  line-height: 290px;
+  font-size: 60px;
+  color: white;
+}
+
+.count-board-visible {
+  left: 50%;
+}

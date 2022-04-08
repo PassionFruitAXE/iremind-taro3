@@ -2,7 +2,7 @@
  * @Author: Luo Wei
  * @Date: 2022-03-19 09:54:22
  * @LastEditors: Luo Wei
- * @LastEditTime: 2022-04-07 22:46:03
+ * @LastEditTime: 2022-04-08 18:05:40
  */
 
 import { View, Image, Text } from '@tarojs/components';
@@ -43,17 +43,28 @@ const Focus = () => {
     setIsStart(true);
     const timer = setInterval(() => {
       setCount(countRef.current - 1);
-      if (countRef.current < 0) {
+      if (countRef.current <= 0) {
         setIsStart(false);
         setTimeChoose(0);
         focus.focusCountIncrement();
         clearInterval(timer);
+        return;
       }
     }, 1000);
   };
 
   return (
-    <View>
+    <View className='main-container'>
+      <View className={isStart ? 'dashboard dashboard-visible' : 'dashboard'}>
+        {/* isStart ? 0 : '-100vh' */}
+      </View>
+      <View
+        className={isStart ? 'count-board count-board-visible' : 'count-board'}
+      >
+        {~~(count / 60) === 0
+          ? `${count % 60}`
+          : `${~~(count / 60)}:${count % 60}`}
+      </View>
       <Image src={src} className='focus-image' />
       <View className='focus-button-group'>
         <AtButton
@@ -122,7 +133,7 @@ const Focus = () => {
           type='secondary'
           onClick={countStart}
         >
-          {isStart ? `${~~(count / 60)}:${count % 60}` : 'Start'}
+          Start
         </AtButton>
       </View>
       <AtActionSheet

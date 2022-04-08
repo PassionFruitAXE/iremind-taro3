@@ -2,7 +2,7 @@
  * @Author: Luo Wei
  * @Date: 2022-03-19 09:54:22
  * @LastEditors: Luo Wei
- * @LastEditTime: 2022-04-07 22:23:43
+ * @LastEditTime: 2022-04-08 18:31:39
  */
 
 import { View, Text } from '@tarojs/components';
@@ -41,8 +41,8 @@ const Chart = () => {
       },
       angleAxis: {
         max:
-          (Math.max(chartData.focusTimes, chartData.listLength) / 100 + 1) * 100,
-        startAngle: 90
+          (Math.max(chartData.focusTimes, chartData.listLength) / 20 + 1) * 20,
+        startAngle: 45
       },
       radiusAxis: {
         type: 'category',
@@ -66,12 +66,15 @@ const Chart = () => {
   useDidShow(() => {
     (async () => {
       try {
+        setChartData(()=>({listLength: 0,focusTimes: 0,msg: '\n'}));
         const {
           data: {
             data: { myChartData }
           }
         } = await chart.getChartData();
-        setChartData(() => myChartData);
+        setTimeout(() => {
+          setChartData(() => myChartData);
+        },500)
       } catch (err) {
         console.error(err);
       }
